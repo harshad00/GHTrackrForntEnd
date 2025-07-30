@@ -5,6 +5,9 @@ import Footer from './components/Footer';
 import { BrowserRouter as Router ,Route, Routes } from 'react-router';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
+import From from './pages/From';
+import PrivateRoute from './PrivateRoute';
+
 
 function App() {
   
@@ -16,6 +19,14 @@ function App() {
         
         <Routes>
           <Route path="/" element={<Home />} />
+ <Route
+    path="/dashboard"
+    element={
+      <PrivateRoute>
+        <From />
+      </PrivateRoute>
+    }
+  />
            <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

@@ -1,56 +1,74 @@
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Github, LogOut } from "lucide-react";
 import Button from "./comen/button/Button";
 import { useAuthSession } from "../hook/useAuthSession.js";
 
 const Navbar = () => {
+  const { user } = useAuthSession();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  
+
   const handleLogin = () => {
-    window.location.href = "http://localhost:8000/auth/github";
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/github`;
   };
 
   const handleLogout = () => {
-    window.location.href = "http://localhost:8000/auth/logout"; // This should clear the session on backend
+    localStorage.removeItem("user");
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/logout`;
   };
 
-  const { user } = useAuthSession();
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 bg-slate-700 backdrop-blur-md border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-700 bg-opacity-90 backdrop-blur-md border-b border-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo and Navigation */}
           <div className="flex items-center space-x-8">
-            <div className="flex-shrink-0">
-              <Link to="/">
-                <h1 className="text-2xl font-bold text-gradient-primary">
-                  GHTrackr
-                </h1>
-              </Link>
-            </div>
-
-            {/* Navigation Links */}
+            <Link to="/">
+              <h1 className="text-2xl font-bold text-white">GHTrackr</h1>
+            </Link>
             <nav className="hidden md:flex space-x-6">
-              <Link to="/" className="text-foreground hover:text-primary transition-colors">
-                Home
-              </Link>
+              <Link to="/" className="text-white hover:text-yellow-300">Home</Link>
             </nav>
           </div>
 
-          {/* Auth Buttons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 relative" ref={dropdownRef}>
             {user ? (
               <>
-                <span className="text-foreground">Welcome, {user.username}</span>
-                <Button
-                  className="bg-transparent border border-border text-foreground hover:bg-secondary/50 hover:border-destructive/50"
-                  onClick={handleLogout}
-                  icon={<LogOut />}
-                  text="Logout"
+                <img
+                  src={user.avatar}
+                  alt="avatar"
+                  className="w-8 h-8 rounded-full cursor-pointer"
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
                 />
+
+                {dropdownOpen && (
+                  <div className="absolute top-12 right-0 w-48 bg-white rounded shadow-md p-3 z-50">
+                    <p className="text-sm text-gray-800 mb-2">Hi, {user.username}</p>
+                    <Button
+                      className="w-full bg-red-500 text-white hover:bg-red-600"
+                      onClick={handleLogout}
+                      icon={<LogOut size={16} />}
+                      text="Logout"
+                    />
+                  </div>
+                )}
               </>
             ) : (
               <Button
-                className="bg-transparent border border-border text-foreground hover:bg-secondary/50 hover:border-primary/50"
+                className="bg-transparent border border-white text-white hover:bg-green-500"
                 onClick={handleLogin}
                 icon={<Github />}
                 text="Login with GitHub"
