@@ -4,29 +4,44 @@ import axios from "axios";
 
 export const useAuth = () => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/auth/user", {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/user`, {
         withCredentials: true,
       });
-      setUser(res.data.user);
+
+      if (res.data.user) {
+        setUser(res.data.user);
+        console.log("User fetched:", res.data.user);
+        
+      }
+
+      // Save token if it exists
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+        console.log("Token saved to localStorage", res.data.token);
+        
+      }
     } catch (error) {
       setUser(null);
+      localStorage.removeItem("token");
     } finally {
-      setLoading(false); // Set loading to false when done
+      setLoading(false);
     }
   };
 
   const logout = async () => {
     try {
-      await axios.get("http://localhost:8000/auth/logout", {
+      await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, {
         withCredentials: true,
       });
-      setUser(null);
     } catch (error) {
       console.error("Logout failed", error);
+    } finally {
+      setUser(null);
+      localStorage.removeItem("token");
     }
   };
 
@@ -34,5 +49,5 @@ export const useAuth = () => {
     fetchUser();
   }, []);
 
-  return { user, logout, loading };
+  return { user, loading, logout };
 };

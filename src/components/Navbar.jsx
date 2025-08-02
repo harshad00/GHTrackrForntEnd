@@ -2,24 +2,23 @@ import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Github, LogOut } from "lucide-react";
 import Button from "./comen/button/Button";
-import { useAuthSession } from "../hook/useAuthSession.js";
+import { useAuth } from "../hook/useAuth"; 
 
 const Navbar = () => {
-  const { user } = useAuthSession();
+  const { user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  
 
   const handleLogin = () => {
     window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/github`;
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/logout`;
+  const handleLogout = async () => {
+    await logout(); // logout using the hook
+    window.location.href = "/"; // redirect after logout
   };
 
-  // Close dropdown when clicking outside
+  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -53,7 +52,6 @@ const Navbar = () => {
                   className="w-8 h-8 rounded-full cursor-pointer"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 />
-
                 {dropdownOpen && (
                   <div className="absolute top-12 right-0 w-48 bg-white rounded shadow-md p-3 z-50">
                     <p className="text-sm text-gray-800 mb-2">Hi, {user.username}</p>
