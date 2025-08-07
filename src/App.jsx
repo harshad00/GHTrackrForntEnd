@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import From from './pages/From';
 import PrivateRoute from './PrivateRoute';
+import UserRepo from './pages/UserRepo';
 
 
 function App() {
@@ -24,6 +25,14 @@ function App() {
     element={
       <PrivateRoute>
         <From />
+      </PrivateRoute>
+    }
+  />
+ <Route
+    path="/user-repo/:repo"
+    element={
+      <PrivateRoute>
+        <UserRepo/>
       </PrivateRoute>
     }
   />

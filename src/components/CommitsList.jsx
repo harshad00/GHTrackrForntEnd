@@ -9,12 +9,14 @@ const CommitList = ({ username, repo }) => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <ul>
+    <ol>
       {commits.map((commit, idx) => (
-        <li key={idx}>{commit.message}</li>
+        <li key={idx}> { idx + 1}: {commit.message}</li>
       ))}
-    </ul>
+    </ol>
   );
 };
 
 export default CommitList;
+18002090365
+18002090365.

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../components/comen/button/Button';
 import Input from '../components/comen/Input';
-import CommitList from '../components/CommitsList.jsx';
 
 function From() {
   const [formData, setFormData] = useState({
@@ -9,7 +9,7 @@ function From() {
     repository: '',
   });
 
-  const [submittedData, setSubmittedData] = useState(null);
+  const navigate = useNavigate(); // ← useNavigate here
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,8 +21,11 @@ function From() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.githubUsername || !formData.repository) return;
-    setSubmittedData(formData); // trigger commit fetch in CommitList
+    const { githubUsername, repository } = formData;
+    if (!githubUsername || !repository) return;
+
+    // Redirect and pass data via state
+    navigate(`/user-repo/${repository}`);
   };
 
   return (
@@ -60,14 +63,6 @@ function From() {
 
                 <Button text="Get Commits" className="mx-auto" />
               </form>
-
-              {/* Commits display after form is submitted */}
-              {submittedData && (
-                <CommitList
-                  username={submittedData.githubUsername}
-                  repo={submittedData.repository}
-                />
-              )}
             </div>
           </div>
         </div>
