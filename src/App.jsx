@@ -29,7 +29,7 @@ function App() {
     }
   />
  <Route
-    path="/user-repo/:repo"
+    path="/user-repo/:githubusername/:repo"
     element={
       <PrivateRoute>
         <UserRepo/>

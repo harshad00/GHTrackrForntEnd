@@ -1,12 +1,14 @@
-// src/components/PrivateRoute.jsx
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./hook/useAuth";
+// import { useAPI} from "./hook/useAPI"
 
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
   let mydata = user;
   console.log(mydata);
+
+  
   
   
 

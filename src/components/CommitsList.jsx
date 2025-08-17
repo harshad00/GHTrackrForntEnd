@@ -18,5 +18,3 @@ const CommitList = ({ username, repo }) => {
 };
 
 export default CommitList;
-18002090365
-18002090365.

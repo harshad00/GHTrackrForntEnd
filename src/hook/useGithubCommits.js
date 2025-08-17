@@ -10,23 +10,30 @@ export const useGithubCommits = (username, repo) => {
   useEffect(() => {
     const fetchCommits = async () => {
       setLoading(true);
+      setError(null);
 
       try {
         const res = await fetch(`${API_URL}?username=${username}&repo=${repo}`, {
-          method: 'GET',
-          credentials: 'include',
+          method: "GET",
+          credentials: "include",
           headers: {
-        
             "Content-Type": "application/json",
           },
         });
 
-        if (!res.ok) throw new Error("Failed to fetch commits");
-
         const data = await res.json();
-        console.log(data);
-        
-        setCommits(data.commits);
+
+        if (!res.ok) {
+          // Specific handling for "no commits" (404)
+          if (res.status === 404) {
+            setError(data.message || "No commits found for yesterday.");
+            setCommits([]);
+            return;
+          }
+          throw new Error(data.message || "Failed to fetch commits");
+        }
+
+        setCommits(data.commits || []);
       } catch (err) {
         setError(err.message || "Something went wrong");
       } finally {

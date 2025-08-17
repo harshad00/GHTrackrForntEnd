@@ -1,16 +1,35 @@
-import React from 'react'
-import { useParams } from 'react-router'
+import React from "react";
+import { useParams } from "react-router-dom";
+import { useApi } from "../hook/useAPI";
+import { CommitList } from "../components/CommitList";
 
 function UserRepo() {
-    const { repo } = useParams();
-    console.log(repo);
-    
+  const { githubusername, repo } = useParams();
+
+  const { data: submittedData, loading, error } = useApi({
+    url: `http://localhost:8000/api/user/bygithubusernameandreponame?userId=${githubusername}&repo=${repo}`,
+  });
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message || JSON.stringify(error)}</p>;
+
+  // 🛠 Extract the correct object for CommitList
+  const repoData = submittedData?.commits?.[0];
+  if (!repoData) return <p>No data found</p>;
+
+  // Shape it for CommitList
+  const commitListData = {
+    username: repoData.username,
+    repo: repoData.repo,
+    fetchedAt: repoData.fetchedAt,
+    commits: repoData.commits || [],
+  };
+
   return (
-      <div>
-          <h1 className='text-center text-2xl mt-32'> THIS IS MY REPO { repo}</h1>
-       {/* <CommitList username={submittedData.githubUsername} repo={submittedData.repository}/> */}
+    <div className="mt-10">
+      <CommitList data={commitListData} />
     </div>
-  )
+  );
 }
 
-export default UserRepo
+export default UserRepo;

@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/comen/button/Button';
 import Input from '../components/comen/Input';
+import { useGithubCommits } from '../hook/useGithubCommits';
 
 function From() {
   const [formData, setFormData] = useState({
     githubUsername: '',
     repository: '',
+    submitted: false, // flag to track when we want to fetch
   });
 
-  const navigate = useNavigate(); // ← useNavigate here
+  const navigate = useNavigate();
+
+  // Only pass username/repo to hook when submitted
+  const { commits, loading, error } = useGithubCommits(
+    formData.submitted ? formData.githubUsername : '',
+    formData.submitted ? formData.repository : ''
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,9 +32,18 @@ function From() {
     const { githubUsername, repository } = formData;
     if (!githubUsername || !repository) return;
 
-    // Redirect and pass data via state
-    navigate(`/user-repo/${repository}`);
+    setFormData((prev) => ({
+      ...prev,
+      submitted: true, // trigger hook fetch
+    }));
   };
+
+  // Redirect when commits are fetched
+  useEffect(() => {
+    if (formData.submitted && commits.length > 0) {
+      navigate(`/user-repo/${formData.githubUsername}/${formData.repository}`);
+    }
+  }, [commits, formData, navigate]);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -63,6 +80,11 @@ function From() {
 
                 <Button text="Get Commits" className="mx-auto" />
               </form>
+
+              {loading && formData.submitted && <p>Checking commits...</p>}
+              {error && formData.submitted && (
+                <p className="text-red-400">{error}</p>
+              )}
             </div>
           </div>
         </div>

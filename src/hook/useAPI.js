@@ -28,7 +28,7 @@ export function useApi({ url, method = 'GET', body = null, headers = { 'Content-
     } finally {
       setLoading(false);
     }
-  }, [url, method, body, headers]);
+  }, []);
 
   useEffect(() => {
     if (autoFetch) {
