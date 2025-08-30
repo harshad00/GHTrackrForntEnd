@@ -7,7 +7,7 @@ export default defineConfig({
     proxy: {
       // Forward /api calls to backend at port 8000
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'https://gh-trackr-fornt-end.vercel.app',
         changeOrigin: true,
         secure: false,
       },
