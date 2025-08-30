@@ -6,9 +6,10 @@ import { CommitList } from "../components/CommitList";
 function UserRepo() {
   const { githubusername, repo } = useParams();
 
-  const { data: submittedData, loading, error } = useApi({
-    url: `http://localhost:8000/api/user/bygithubusernameandreponame?username=${githubusername}&repo=${repo}`,
-  });
+ const { data: submittedData, loading, error } = useApi({
+  url: `${import.meta.env.VITE_BACKEND_URL}/api/user/bygithubusernameandreponame?username=${githubusername}&repo=${repo}`,
+});
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message || JSON.stringify(error)}</p>;

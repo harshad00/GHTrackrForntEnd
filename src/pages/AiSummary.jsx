@@ -8,9 +8,10 @@ import { CommitCard } from "../components/CommitCard.jsx";
 function AiSummary() {
   const { repo } = useParams();
 
-  const { data, error, loading } = useApi({
-    url: `http://localhost:8000/api/summar/summarybyrepo?repo=${repo}`,
-  });
+ const { data, error, loading } = useApi({
+  url: `${import.meta.env.VITE_BACKEND_URL}/api/summar/summarybyrepo?repo=${repo}`,
+});
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;

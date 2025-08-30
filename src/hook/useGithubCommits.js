@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:8000/api/github/commits";
+const API_URL = import.meta.env.VITE_BACKEND_URL + "/api/github/commits";
 
 export const useGithubCommits = (username, repo) => {
   const [commits, setCommits] = useState([]);

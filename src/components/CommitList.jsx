@@ -12,7 +12,7 @@ export function CommitList({ data }) {
     loading,
     error,
   } = useApi({
-    url: `http://localhost:8000/api/summar/summary?repo=${data.repo}`,
+    url: `${import.meta.env.VITE_BACKEND_URL}/api/summar/summary?repo=${data.repo}`,
     method: "GET",
   });
 

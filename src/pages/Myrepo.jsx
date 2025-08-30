@@ -12,9 +12,10 @@ function Myrepo({ user }) {
     return <p>Please log in to view your repositories.</p>;
   }
 
-  const { data, loading, error } = useApi({
-    url: `http://localhost:8000/api/user/all?userId=${user._id}`,
-  });
+ const { data, loading, error } = useApi({
+  url: `${import.meta.env.VITE_BACKEND_URL}/api/user/all?userId=${user._id}`,
+});
+
 
   if (loading) return <p>Loading...</p>;
   if (error) {

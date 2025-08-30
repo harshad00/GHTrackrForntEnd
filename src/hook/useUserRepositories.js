@@ -7,9 +7,10 @@ export function useUserRepositories(userId) {
 //     autoFetch: !!userId, // only fetch when we actually have a userId
 //   });
 
-     const { data, loading, error } = useApi({
-        url:`http://localhost:8000/api/user/all?userId=${userId}`
-      });
+   const { data, loading, error } = useApi({
+  url: `${import.meta.env.VITE_BACKEND_URL}/api/user/all?userId=${userId}`,
+});
+
   // Normalize data so Myrepo always gets an array
   const repositories = data?.repositories || [];
 
