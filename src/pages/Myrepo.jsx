@@ -17,7 +17,13 @@ function Myrepo({ user }) {
   });
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error loading repositories: {error.message}</p>;
+  if (error) {
+  return (
+    <p className="mt-20 text-center text-red-500 font-medium">
+      No repositories found. Please add a repository.
+    </p>
+  );
+}
   
   // console.log(data);
   const { commits} = data || {};
@@ -56,9 +62,9 @@ function Myrepo({ user }) {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 mt-12 py-8">
         {repositories.length === 0 ? (
-          <div className="text-center py-12">
+          <div className="text-center py-12 ">
             <div className="mx-auto w-24 h-24 rounded-full bg-muted flex items-center justify-center mb-4">
               <Database className="h-12 w-12 text-muted-foreground" />
             </div>
