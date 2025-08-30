@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./hook/useAuth";
+import React from "react";
 // import { useAPI} from "./hook/useAPI"
 
 
@@ -17,7 +18,7 @@ const PrivateRoute = ({ children }) => {
   // If user is not authenticated, redirect to login
   if (!user) return <Navigate to="/" />;
 
-  return children; // If authenticated, render the protected children
+   return React.cloneElement(children, { user }); // If authenticated, render the protected children
 };
 
 export default PrivateRoute;

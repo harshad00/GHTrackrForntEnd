@@ -10,12 +10,12 @@ export function CommitItem({ commit }) {
     const date = new Date(dateString);
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-    
+
     if (diffInSeconds < 60) return `${diffInSeconds} seconds ago`;
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
     if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
     if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)} days ago`;
-    
+
     return date.toLocaleDateString();
   };
 
@@ -150,16 +150,35 @@ export function CommitItem({ commit }) {
                         </div>
                         {(file.additions || file.deletions) && (
                           <div className="flex items-center gap-2 text-xs">
-                            {file.additions > 0 && <span className="text-github-green">+{file.additions}</span>}
-                            {file.deletions > 0 && <span className="text-github-red">-{file.deletions}</span>}
+                            {file.additions > 0 && <span className="text-github-green text-green-300">+{file.additions}</span>}
+                            {file.deletions > 0 && <span className="text-github-red text-red-300">-{file.deletions}</span>}
                           </div>
                         )}
                       </div>
 
                       {/* Patch code block */}
-                      {file.patch && (
+                      {/* {file.patch && (
                         <pre className="bg-black text-green-300 p-2 rounded-md overflow-x-auto text-xs">
                           {file.patch}
+                        </pre>
+                      )} */}
+                      {file.patch && (
+                        <pre className="bg-black p-2 rounded-md overflow-x-auto text-xs">
+                          {file.patch.split("\n").map((line, index) => {
+                            let lineClass = "text-white"; // default
+
+                            if (line.startsWith("+")) {
+                              lineClass = "text-green-400"; // added
+                            } else if (line.startsWith("-")) {
+                              lineClass = "text-red-400"; // removed
+                            }
+
+                            return (
+                              <div key={index} className={lineClass}>
+                                {line}
+                              </div>
+                            );
+                          })}
                         </pre>
                       )}
                     </div>

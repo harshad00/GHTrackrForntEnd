@@ -40,6 +40,9 @@ const Navbar = () => {
             </Link>
             <nav className="hidden md:flex space-x-6">
               <Link to="/" className="text-white hover:text-yellow-300">Home</Link>
+              {user ?
+             ( <Link to="/myrepos" className="text-white hover:text-yellow-300">MY REPOS</Link>):(<></>)
+              }
             </nav>
           </div>
 

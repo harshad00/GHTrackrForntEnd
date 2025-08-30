@@ -7,7 +7,7 @@ function UserRepo() {
   const { githubusername, repo } = useParams();
 
   const { data: submittedData, loading, error } = useApi({
-    url: `http://localhost:8000/api/user/bygithubusernameandreponame?userId=${githubusername}&repo=${repo}`,
+    url: `http://localhost:8000/api/user/bygithubusernameandreponame?username=${githubusername}&repo=${repo}`,
   });
 
   if (loading) return <p>Loading...</p>;

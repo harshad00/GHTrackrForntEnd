@@ -1,77 +1,37 @@
 import { CommitItem } from "./CommitItem";
 import { Card } from "./comen/button/Card";
 import { GitCommit, Folder, Sparkles } from "lucide-react";
+import { useApi } from "../hook/useAPI";
+import { useNavigate } from "react-router-dom";
 
 export function CommitList({ data }) {
-  // console.log("[CommitList] Rendered with data:", data);
+  const navigate = useNavigate();
+  // Fetch AI summary at component load
+  const {
+    data: commitSummary,
+    loading,
+    error,
+  } = useApi({
+    url: `http://localhost:8000/api/summar/summary?repo=${data.repo}`,
+    method: "GET",
+  });
 
   const formatFetchTime = (dateString) => {
-    console.log("[CommitList] Formatting fetch time for:", dateString);
     const date = new Date(dateString);
     return date.toLocaleString();
   };
 
   const handleAIExplain = () => {
-    console.log("[CommitList] Running AI Explain...");
-    console.log("[CommitList] Commits array:", data.commits);
-
-    const totalCommits = data.commits.length;
-
-    // Handle file stats only if they exist
-    const totalFiles = data.commits.reduce(
-      (acc, commit) => acc + (commit.files?.length || 0),
-      0
-    );
-
-    const totalAdditions = data.commits.reduce(
-      (acc, commit) =>
-        acc +
-        (commit.files?.reduce(
-          (fileAcc, file) => fileAcc + (file.additions || 0),
-          0
-        ) || 0),
-      0
-    );
-
-    const totalDeletions = data.commits.reduce(
-      (acc, commit) =>
-        acc +
-        (commit.files?.reduce(
-          (fileAcc, file) => fileAcc + (file.deletions || 0),
-          0
-        ) || 0),
-      0
-    );
-
-    // console.log("[CommitList] Totals:", {
-    //   totalCommits,
-    //   totalFiles,
-    //   totalAdditions,
-    //   totalDeletions
-    // });
-
-    const recentActivity = data.commits.slice(0, 3);
-    const mainActivities = recentActivity.map((commit) => {
-      const msg = commit.message.toLowerCase();
-      if (msg.includes("test")) return "testing";
-      if (msg.includes("fix")) return "bug fixes";
-      if (msg.includes("add") || msg.includes("create")) return "new features";
-      if (msg.includes("update") || msg.includes("refactor")) return "improvements";
-      if (msg.includes("remove") || msg.includes("delete")) return "cleanup";
-      return "development";
-    });
-
-    const uniqueActivities = [...new Set(mainActivities)];
-
-    // Simple AI summary
-    const summary = `Repository ${data.username}/${data.repo} has ${totalCommits} commits.`
-      + (totalFiles > 0
-        ? ` Affecting ${totalFiles} files (+${totalAdditions}/-${totalDeletions} lines).`
-        : "")
-      + ` Recent focus: ${uniqueActivities.join(", ")}.`;
-
-    console.log("[AI Explain Summary]", summary);
-
+    if (loading) {
+      console.log("[CommitList] Loading commit summary...");
+      return;
+    }
+    else if (error) {
+      console.error("[CommitList] Error fetching commit summary:", error);
+      return;
+    }
+    // console.log("[CommitList] Fetched commit summary:", commitSummary);
+       navigate(`/user-repo-AIsummary/${data.repo}`);
   };
 
   return (
@@ -79,24 +39,25 @@ export function CommitList({ data }) {
       <Card className="p-6 bg-accent">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <Folder className="h-6 w-6 text-accent-foreground text-white" />
-            <h1 className="text-2xl font-bold text-accent-foreground text-white">
+            <Folder className="h-6 w-6 text-white" />
+            <h1 className="text-2xl font-bold text-white">
               {data.username}/{data.repo}
             </h1>
           </div>
           <button
             onClick={handleAIExplain}
-            variant="secondary"
-            size="sm"
-            className="flex items-center gap-2 borser border-yellow-100 rounded-md "
+            className="flex items-center gap-2 border border-yellow-100 rounded-md px-3 py-1"
           >
-            <Sparkles className="h-4 w-4 text-wrap" />
+            <Sparkles className="h-4 w-4" />
             AI Explain
           </button>
         </div>
         <div className="text-sm text-muted-foreground">
           <p>Last fetched: {formatFetchTime(data.fetchedAt)}</p>
-          <p>{data.commits.length} commit{data.commits.length !== 1 ? "s" : ""} found</p>
+          <p>
+            {data.commits.length} commit
+            {data.commits.length !== 1 ? "s" : ""} found
+          </p>
         </div>
       </Card>
 
@@ -107,10 +68,9 @@ export function CommitList({ data }) {
 
       <div className="space-y-3">
         {data.commits.length > 0 ? (
-          data.commits.map((commit, index) => {
-            console.log(`[CommitList] Rendering commit #${index}`, commit);
-            return <CommitItem key={commit.sha || index} commit={commit} />;
-          })
+          data.commits.map((commit, index) => (
+            <CommitItem key={commit.sha || index} commit={commit} />
+          ))
         ) : (
           <Card className="p-8 text-center">
             <GitCommit className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
