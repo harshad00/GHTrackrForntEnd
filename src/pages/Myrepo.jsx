@@ -11,9 +11,12 @@ function Myrepo({ user }) {
   if (!user) {
     return <p>Please log in to view your repositories.</p>;
   }
+console.log(`${import.meta.env.VITE_BACKEND_URL}/api/user/all?userId=${user._id}`);
 
  const { data, loading, error } = useApi({
-  url: `${import.meta.env.VITE_BACKEND_URL}/api/user/all?userId=${user._id}`,
+   url: `${import.meta.env.VITE_BACKEND_URL}/api/user/all?userId=${user._id}`,
+   
+   
 });
 
 

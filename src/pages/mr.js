@@ -9,7 +9,7 @@ function UserRepo() {
   console.log("📌 Params:", { githubusername, repo });
 
   const { data: submittedData, loading, error } = useApi({
-    url: `http://localhost:8000/api/user/bygithubusernameandreponame?userId=${githubusername}&repo=${repo}`,
+    url: `${import.meta.env.VITE_BACKEND_URL}/api/user/bygithubusernameandreponame?userId=${githubusername}&repo=${repo}`,
   });
 
   console.log("📌 API Raw Data:", submittedData);
