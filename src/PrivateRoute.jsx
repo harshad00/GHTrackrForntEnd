@@ -7,7 +7,7 @@ import React from "react";
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
   let mydata = user;
-  console.log(mydata);
+  // console.log(mydata);
 
   
   

@@ -23,7 +23,7 @@ export function CommitList({ data }) {
 
   const handleAIExplain = () => {
     if (loading) {
-      console.log("[CommitList] Loading commit summary...");
+      // console.log("[CommitList] Loading commit summary...");
       return;
     }
     else if (error) {

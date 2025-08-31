@@ -14,14 +14,14 @@ export const useAuth = () => {
 
       if (res.data.user) {
         setUser(res.data.user);
-        console.log("User fetched:", res.data.user);
+        // console.log("User fetched:", res.data.user);
         
       }
 
       // Save token if it exists
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
-        console.log("Token saved to localStorage", res.data.token);
+        // console.log("Token saved to localStorage", res.data.token);
         
       }
     } catch (error) {

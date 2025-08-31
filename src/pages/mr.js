@@ -6,13 +6,13 @@ import { CommitList } from "../components/CommitList";
 function UserRepo() {
   const { githubusername, repo } = useParams();
 
-  console.log("📌 Params:", { githubusername, repo });
+  // console.log("📌 Params:", { githubusername, repo });
 
   const { data: submittedData, loading, error } = useApi({
     url: `${import.meta.env.VITE_BACKEND_URL}/api/user/bygithubusernameandreponame?userId=${githubusername}&repo=${repo}`,
   });
 
-  console.log("📌 API Raw Data:", submittedData);
+  // console.log("📌 API Raw Data:", submittedData);
 
   if (loading) return <p>Loading...</p>;
   if (error) {
@@ -25,7 +25,7 @@ function UserRepo() {
     commits: submittedData?.commits || [],
   };
 
-  console.log("🔹 Data passed to CommitList:", commitListData);
+  // console.log("🔹 Data passed to CommitList:", commitListData);
 
   return (
     <div className="mt-10">

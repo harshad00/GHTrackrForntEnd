@@ -6,12 +6,12 @@ import RepositoryCard from "../components/RepositoryCard";
 
 
 function Myrepo({ user }) {
-  console.log("User:", user?._id);
+  // console.log("User:", user?._id);
 
   if (!user) {
     return <p>Please log in to view your repositories.</p>;
   }
-console.log(`${import.meta.env.VITE_BACKEND_URL}/api/user/all?userId=${user._id}`);
+// console.log(`${import.meta.env.VITE_BACKEND_URL}/api/user/all?userId=${user._id}`);
 
  const { data, loading, error } = useApi({
    url: `${import.meta.env.VITE_BACKEND_URL}/api/user/all?userId=${user._id}`,

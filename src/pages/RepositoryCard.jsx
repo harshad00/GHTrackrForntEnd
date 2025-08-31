@@ -7,7 +7,7 @@ function Myrepo() {
 
   if (userAuthLoding) return <p>Loading...</p>;
   if (!user) return <p>Please log in to view your repositories.</p>;
-  console.log(user);
+  // console.log(user);
   
     
 
