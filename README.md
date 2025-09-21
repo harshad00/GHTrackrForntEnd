@@ -1,7 +1,7 @@
 
 # GH-TRACKR
 
-![Screenshot](public\home.png)
+![Screenshot](public/home.png)
 
 # 🚀 TRACKR
 
@@ -21,12 +21,12 @@ It helps developers stay on top of their daily progress without manually scannin
 ## 📸 Screenshot
 
 
-![TRACKR Screenshot](public\g1.png)
+![TRACKR Screenshot](public/g1.png)
 - Clicke Start Now  
 
 ---
 
-![TRACKR Screenshot](public\g2.png)
+![TRACKR Screenshot](public/g2.png)
 
 - add your Github UserName and yester day commited  Repo Name. 
 
@@ -34,17 +34,17 @@ It helps developers stay on top of their daily progress without manually scannin
 
 ---
 
-![TRACKR Screenshot](public\g3.png)
+![TRACKR Screenshot](public/g3.png)
 - If Get your Commits you come here in this page you Can see you all Commits and than you can genrate you commit Summary.
 
 - Now Click AI Explan Button
 
 ---
-![TRACKR Screenshot](public\g4.png)
+![TRACKR Screenshot](public/g4.png)
 
 - you are come in dashboard.
 ---
-![TRACKR Screenshot](public\g5.png)
+![TRACKR Screenshot](public/g5.png)
 
 
 
